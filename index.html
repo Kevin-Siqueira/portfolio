@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kevin Siqueira | Desenvolvedor Python & IA</title>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos Globais e Variáveis */
+        :root {
+            --bg-dark: #0a0d14;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(31, 41, 55, 0.8);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --brand-primary: #22c55e;
+            --brand-hover: #16a34a;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+            --blue-accent: #3b82f6;
+            --purple-accent: #a855f7;
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        /* Utilitários de Layout */
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+        }
+
+        .glow-button {
+            background-color: var(--brand-primary);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 0 20px -3px rgba(34, 197, 94, 0.4);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .glow-button:hover {
+            background-color: var(--brand-hover);
+            box-shadow: 0 0 25px 0px rgba(34, 197, 94, 0.6);
+        }
+
+        .secondary-button {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-weight: 500;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .secondary-button:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Header / Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+            background: rgba(10, 13, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+
+        .logo span {
+            color: var(--brand-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .nav-links a:hover {
+            color: var(--brand-primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-link {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            padding: 0.5rem;
+        }
+
+        .icon-link:hover {
+            color: var(--text-main);
+        }
+
+        .icon-link.linkedin:hover {
+            color: #60a5fa;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding-top: 10rem;
+            padding-bottom: 5rem;
+            position: relative;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: rgba(34, 197, 94, 0.12);
+            filter: blur(90px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            color: var(--brand-primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--brand-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--brand-primary);
+        }
+
+        .hero-title {
+            font-size: 3.25rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title span {
+            background: linear-gradient(to right, var(--brand-primary), #6ee7b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-description {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 90%;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .highlights-card {
+            padding: 2rem;
+        }
+
+        .highlights-card h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .highlight-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight-icon {
+            color: var(--brand-primary);
+            font-size: 1.25rem;
+            margin-top: 0.2rem;
+        }
+
+        .highlight-item h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .highlight-item p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Seção de Projetos */
+        .section-padding {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 3.5rem auto;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .project-card {
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+
+        .project-category {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .tag-pill {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.375rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--brand-primary);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .tag-pill.blue {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .tag-pill.purple {
+            background: rgba(168, 85, 247, 0.1);
+            color: #c084fc;
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.25rem;
+            color: #d1d5db;
+        }
+
+        .project-footer {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .project-link {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brand-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-link.blue { color: #60a5fa; }
+        .project-link.purple { color: #c084fc; }
+
+        .project-link:hover {
+            opacity: 0.8;
+        }
+
+        /* Seção Tecnologias */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+        }
+
+        .tech-card {
+            padding: 1.25rem;
+            text-align: center;
+            transition: border-color 0.2s ease;
+        }
+
+        .tech-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tech-card i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-card p {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Seção de Contato */
+        .contact-box {
+            padding: 3.5rem 2rem;
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .contact-box h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .contact-box p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-description {
+                margin: 0 auto 2rem auto;
+            }
+            .hero-buttons {
+                justify-content: center;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .tech-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero-title {
+                font-size: 2.25rem;
+            }
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div class="container navbar">
+            <a href="#" class="logo">
+                KEVIN<span>.DEV</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#about">Sobre</a>
+                <a href="#projects">Projetos</a>
+                <a href="#tech">Tecnologias</a>
+                <a href="#contact">Contato</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="https://github.com/Kevin-Siqueira" target="_blank" class="icon-link" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/kevin-siqueira-de-jesus" target="_blank" class="icon-link linkedin" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#contact" class="glow-button" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                    Falar Comigo
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="about" class="hero-section">
+            <div class="hero-glow"></div>
+            <div class="container hero-grid">
+                <div>
+                    <div class="badge">
+                        <span class="badge-dot"></span>
+                        Disponibilidade Presencial & Híbrida em São Paulo / SP
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        Desenvolvedor <span>Python & IA</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        Engenheiro de Software focado na construção de arquiteturas sólidas com <strong>FastAPI</strong>, <strong>PostgreSQL</strong>, <strong>Redis</strong> e soluções de inteligência artificial aplicadas à automação de processos.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="#projects" class="glow-button">
+                            Ver Projetos <i class="fas fa-arrow-down" style="font-size: 0.8rem;"></i>
+                        </a>
+                        <a href="https://github.com/Kevin-Siqueira" target="_blank" class="secondary-button">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="https://www.linkedin.com/in/kevin-siqueira-de-jesus" target="_blank" class="secondary-button">
+                            <i class="fab fa-linkedin" style="color: #60a5fa;"></i> LinkedIn
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card de Destaques -->
+                <div class="glass-card highlights-card">
+                    <h3>Destaques Profissionais</h3>
+                    
+                    <div class="highlight-item">
+                        <i class="fas fa-shield-alt highlight-icon"></i>
+                        <div>
+                            <h4>Segurança & Autenticação</h4>
+                            <p>Implementação de JWT, RBAC e Token Blacklist em Redis.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-item">
+                        <i class="fas fa-server highlight-icon"></i>
+                        <div>
+                            <h4>Arquitetura Backend</h4>
+                            <p>APIs RESTful de alta performance com PostgreSQL e Docker.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-item">
+                        <i class="fas fa-robot highlight-icon"></i>
+                        <div>
+                            <h4>Integração de IA</h4>
+                            <p>Automação de fluxos inteligentes e estruturação de documentos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Projetos -->
+        <section id="projects" class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Projetos em Destaque</h2>
+                    <p class="section-subtitle">
+                        Aplicações completas desenvolvidas com foco em arquitetura limpa, testes automatizados e conteinização.
+                    </p>
+                </div>
+
+                <div class="projects-grid">
+                    <!-- AuthGuard API -->
+                    <div class="glass-card project-card">
+                        <div>
+                            <div class="project-category">
+                                <span class="tag-pill">Segurança & Auth</span>
+                                <i class="fas fa-lock" style="color: var(--text-dim);"></i>
+                            </div>
+                            <h3 class="project-title">AuthGuard API</h3>
+                            <p class="project-desc">
+                                Central RESTful de autenticação e autorização RBAC com renovação de tokens JWT, revogação instantânea via Redis e suíte de testes automatizados com Pytest.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">Redis</span>
+                                <span class="tech-tag">PostgreSQL</span>
+                                <span class="tech-tag">Docker</span>
+                            </div>
+                        </div>
+                        <div class="project-footer">
+                            <a href="https://github.com/Kevin-Siqueira/auth-guard-api" target="_blank" class="project-link">
+                                Ver Repositório <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mini-ERP API -->
+                    <div class="glass-card project-card">
+                        <div>
+                            <div class="project-category">
+                                <span class="tag-pill blue">Gestão de Negócios</span>
+                                <i class="fas fa-boxes" style="color: var(--text-dim);"></i>
+                            </div>
+                            <h3 class="project-title">Mini-ERP API</h3>
+                            <p class="project-desc">
+                                Sistema backend para gestão empresarial com CRUD completo de clientes e produtos, controle transacional de estoque e cálculo automático de vendas.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">SQLAlchemy</span>
+                                <span class="tech-tag">Pytest</span>
+                            </div>
+                        </div>
+                        <div class="project-footer">
+                            <a href="https://github.com/Kevin-Siqueira/mini-erp-api" target="_blank" class="project-link blue">
+                                Ver Repositório <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- AI Document Processor -->
+                    <div class="glass-card project-card">
+                        <div>
+                            <div class="project-category">
+                                <span class="tag-pill purple">Inteligência Artificial</span>
+                                <i class="fas fa-brain" style="color: var(--text-dim);"></i>
+                            </div>
+                            <h3 class="project-title">AI Doc Processor</h3>
+                            <p class="project-desc">
+                                Microsserviço de IA para extração, análise sintática e estruturação automática de dados não estruturados contidos em documentos PDF e imagens.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">AI / LLM</span>
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">JSON Ops</span>
+                            </div>
+                        </div>
+                        <div class="project-footer">
+                            <a href="https://github.com/Kevin-Siqueira/ai-doc-processor" target="_blank" class="project-link purple">
+                                Ver Repositório <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Tecnologias -->
+        <section id="tech" class="section-padding">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Tecnologias & Ferramentas</h2>
+                    <p class="section-subtitle">Stack de desenvolvimento utilizada no dia a dia dos projetos.</p>
+                </div>
+
+                <div class="tech-grid">
+                    <div class="glass-card tech-card">
+                        <i class="fab fa-python" style="color: #facc15;"></i>
+                        <p>Python</p>
+                    </div>
+                    <div class="glass-card tech-card">
+                        <i class="fas fa-bolt" style="color: #34d399;"></i>
+                        <p>FastAPI</p>
+                    </div>
+                    <div class="glass-card tech-card">
+                        <i class="fas fa-database" style="color: #60a5fa;"></i>
+                        <p>PostgreSQL</p>
+                    </div>
+                    <div class="glass-card tech-card">
+                        <i class="fas fa-memory" style="color: #ef4444;"></i>
+                        <p>Redis</p>
+                    </div>
+                    <div class="glass-card tech-card">
+                        <i class="fab fa-docker" style="color: #3b82f6;"></i>
+                        <p>Docker</p>
+                    </div>
+                    <div class="glass-card tech-card">
+                        <i class="fas fa-vial" style="color: #22d3ee;"></i>
+                        <p>Pytest</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Contato -->
+        <section id="contact" class="section-padding">
+            <div class="container">
+                <div class="glass-card contact-box">
+                    <h2>Vamos trabalhar juntos?</h2>
+                    <p>
+                        Estou disponível para oportunidades de trabalho presenciais ou híbridas na região de <strong>São Paulo / SP</strong>.
+                    </p>
+                    
+                    <div class="contact-buttons">
+                        <a href="mailto:kevin.siqueira27@gmail.com" class="glow-button">
+                            <i class="fas fa-envelope"></i> kevin.siqueira27@gmail.com
+                        </a>
+                        <a href="https://www.linkedin.com/in/kevin-siqueira-de-jesus" target="_blank" class="secondary-button">
+                            <i class="fab fa-linkedin" style="color: #60a5fa;"></i> Perfil LinkedIn
+                        </a>
+                        <a href="https://github.com/Kevin-Siqueira" target="_blank" class="secondary-button">
+                            <i class="fab fa-github"></i> GitHub Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Kevin Siqueira. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a href="mailto:kevin.siqueira27@gmail.com">
+                    <i class="fas fa-envelope" style="color: var(--brand-primary);"></i> kevin.siqueira27@gmail.com
+                </a>
+                <a href="https://www.linkedin.com/in/kevin-siqueira-de-jesus" target="_blank">
+                    <i class="fab fa-linkedin" style="color: #60a5fa;"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
